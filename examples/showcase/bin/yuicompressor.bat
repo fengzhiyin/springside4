@@ -1,6 +1,7 @@
 @echo off
-echo Please download the yuicompressor from http://yuilibrary.com/downloads/yuicompressor and put the jar file here.
+echo [PreRequirment] Download last version of yuicompressor from https://github.com/yui/yuicompressor/releases and put it here.
 
-java -jar yuicompressor-2.4.7.jar -o ..\src\main\webapp\static\showcase.min.css ..\src\main\webapp\static\showcase.css
+cd %~dp0
+java -jar yuicompressor-*.jar -o ..\src\main\webapp\static\styles\default.min.css ..\src\main\webapp\static\styles\default.css
 
 pause

@@ -1,8 +1,8 @@
-/**
- * Copyright (c) 2005-2012 springside.org.cn
+/*******************************************************************************
+ * Copyright (c) 2005, 2014 springside.github.io
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- */
+ *******************************************************************************/
 package org.springside.modules.security.utils;
 
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
+import org.apache.commons.lang3.Validate;
 import org.springside.modules.utils.Exceptions;
 
 /**
@@ -27,28 +28,25 @@ public class Digests {
 
 	private static SecureRandom random = new SecureRandom();
 
-	private Digests() {
-	}
-
 	/**
 	 * 对输入字符串进行sha1散列.
 	 */
-	public static byte[] sha1(String input) {
+	public static byte[] sha1(byte[] input) {
 		return digest(input, SHA1, null, 1);
 	}
 
-	public static byte[] sha1(String input, byte[] salt) {
+	public static byte[] sha1(byte[] input, byte[] salt) {
 		return digest(input, SHA1, salt, 1);
 	}
 
-	public static byte[] sha1(String input, byte[] salt, int iterations) {
+	public static byte[] sha1(byte[] input, byte[] salt, int iterations) {
 		return digest(input, SHA1, salt, iterations);
 	}
 
 	/**
 	 * 对字符串进行散列, 支持md5与sha1算法.
 	 */
-	private static byte[] digest(String input, String algorithm, byte[] salt, int iterations) {
+	private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance(algorithm);
 
@@ -56,7 +54,7 @@ public class Digests {
 				digest.update(salt);
 			}
 
-			byte[] result = digest.digest(input.getBytes());
+			byte[] result = digest.digest(input);
 
 			for (int i = 1; i < iterations; i++) {
 				digest.reset();
@@ -74,9 +72,8 @@ public class Digests {
 	 * @param numBytes byte数组的大小
 	 */
 	public static byte[] generateSalt(int numBytes) {
-		if (numBytes <= 0) {
-			throw new IllegalArgumentException("numBytes argument must be a positive integer (1 or larger)");
-		}
+		Validate.isTrue(numBytes > 0, "numBytes argument must be a positive integer (1 or larger)", numBytes);
+
 		byte[] bytes = new byte[numBytes];
 		random.nextBytes(bytes);
 		return bytes;
@@ -108,9 +105,7 @@ public class Digests {
 				read = input.read(buffer, 0, bufferLength);
 			}
 
-			byte[] result = messageDigest.digest();
-			return result;
-
+			return messageDigest.digest();
 		} catch (GeneralSecurityException e) {
 			throw Exceptions.unchecked(e);
 		}

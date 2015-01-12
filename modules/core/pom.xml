@@ -3,28 +3,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springside</groupId>
+		<groupId>io.springside</groupId>
 		<artifactId>springside-parent</artifactId>
-		<version>4.0.0.RELEASE-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
+		<version>4.3.0-SNAPSHOT</version>
+		<relativePath>../parent/</relativePath>
 	</parent>
 	<artifactId>springside-core</artifactId>
 	<packaging>jar</packaging>
 	<name>Springside :: Module :: Core</name>
 
 	<dependencies>
-		<!-- SPRING begin -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<optional>true</optional>
+			<groupId>io.springside</groupId>
+			<artifactId>springside-utils</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<!-- SPRING end -->
 
 		<!-- PERSISTENCE begin -->
 		<dependency>
@@ -32,61 +24,43 @@
 			<artifactId>hibernate-core</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<!-- PERSISTENCE end -->
 
-		<!-- WEB begin -->
+		<!-- Security begin -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- Security end -->
+
+		<!-- Web begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- WEB end -->
-
-		<!-- REST begin -->
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<!-- REST end -->
-
-		<!-- SECURITY begin -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<!-- SECURITY end -->
+		<!-- Wed end -->
 
 		<!-- UTILS begin -->
 		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -100,20 +74,31 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -128,66 +113,54 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<!-- LOGGING end -->
 
 		<!-- TEST MODULE begin -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>org.dbunit</groupId>
-			<artifactId>dbunit</artifactId>
-			<scope>compile</scope>
-			<optional>true</optional>
 		</dependency>
 		<!-- TEST MODULE end -->
 
 		<!-- TEST begin -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
@@ -196,25 +169,10 @@
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -222,20 +180,30 @@
 			<artifactId>jaxen</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- TEST end -->
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<plugins>
-			<!-- eclipse plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<wtpversion>none</wtpversion>
-				</configuration>
-			</plugin>
-
 			<!-- source attach plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -248,6 +216,33 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- 打包测试用的jar包，classfier为tests -->
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>org/springside/modules/test/**/*.class</include>
+								<include>jetty/webdefault-windows.xml</include>
+							</includes>
+							<excludes>
+								<exclude>org/springside/modules/test/**/*Test.class</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- enforcer, 规则统一定义在parent -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

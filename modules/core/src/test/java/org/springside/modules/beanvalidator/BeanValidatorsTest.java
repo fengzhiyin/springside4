@@ -1,40 +1,62 @@
+/*******************************************************************************
+ * Copyright (c) 2005, 2014 springside.github.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *******************************************************************************/
 package org.springside.modules.beanvalidator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springside.modules.beanvalidator.BeanValidators;
 import org.springside.modules.test.spring.SpringContextTestCase;
 
 @ContextConfiguration(locations = { "/applicationContext-core-test.xml" })
 public class BeanValidatorsTest extends SpringContextTestCase {
 
 	@Autowired
-	Validator validator;
+	private Validator validator;
+
+	@BeforeClass
+	public static void beforeClass() {
+		// To avoid the non-English environment test failure on message asserts.
+		Locale.setDefault(Locale.ENGLISH);
+	}
 
 	@Test
 	public void validate() {
+
 		Customer customer = new Customer();
 		customer.setEmail("aaa");
 
 		Set<ConstraintViolation<Customer>> violations = validator.validate(customer);
-		assertEquals(2, violations.size());
-		String result = BeanValidators.convertMessage(violations, ",");
-		assertTrue(StringUtils.contains(result, "邮件地址格式不正确"));
-		assertTrue(StringUtils.contains(result, "姓名不能为空"));
+		assertThat(violations).hasSize(2);
+
+		// extract message as list
+		List<String> result = BeanValidators.extractMessage(violations);
+		assertThat(result).containsOnly("not a well-formed email address", "may not be empty");
+
+		// extract propertyPath and message as map;
+		Map mapResult = BeanValidators.extractPropertyAndMessage(violations);
+		assertThat(mapResult).containsOnly(entry("email", "not a well-formed email address"),
+				entry("name", "may not be empty"));
+
+		// extract propertyPath and message as map;
+		result = BeanValidators.extractPropertyAndMessageAsList(violations);
+		assertThat(result).containsOnly("email not a well-formed email address", "name may not be empty");
 	}
 
 	@Test
@@ -44,22 +66,21 @@ public class BeanValidatorsTest extends SpringContextTestCase {
 
 		try {
 			BeanValidators.validateWithException(validator, customer);
-			Assert.fail("should throw excepion");
+			failBecauseExceptionWasNotThrown(ConstraintViolationException.class);
 		} catch (ConstraintViolationException e) {
-			String result = BeanValidators.convertMessage(e, ",");
-			assertTrue(StringUtils.contains(result, "邮件地址格式不正确"));
-			assertTrue(StringUtils.contains(result, "姓名不能为空"));
+			Map mapResult = BeanValidators.extractPropertyAndMessage(e);
+			assertThat(mapResult).contains(entry("email", "not a well-formed email address"),
+					entry("name", "may not be empty"));
 		}
-
 	}
 
 	private static class Customer {
 
-		String name;
+		private String name;
 
-		String email;
+		private String email;
 
-		@NotBlank(message = "姓名不能为空")
+		@NotBlank
 		public String getName() {
 			return name;
 		}
@@ -68,7 +89,7 @@ public class BeanValidatorsTest extends SpringContextTestCase {
 			this.name = name;
 		}
 
-		@Email(message = "邮件地址格式不正确")
+		@Email
 		public String getEmail() {
 			return email;
 		}
